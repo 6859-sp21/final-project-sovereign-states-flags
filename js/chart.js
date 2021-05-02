@@ -204,7 +204,7 @@ d3.select("input#search").on('keydown', (event, d) => {
 createWorld().then(res => {
   const {searchInput, topCountries, detailTable, flagPreview, tooltip, chartLegendSVG, chartSVG} = res;
   // chartSVG.append(flagPreview)
-  searchInput.setElement(d3.select("#search"));
+  searchInput.setElement(d3.select("#search-bar"), d3.select("#search"));
   topCountries.setElement(d3.select("#top-similar-countries"));
   detailTable.setElement(d3.select("#flag-details"), d3.select("#detail-top-cell"));
   flagPreview.setElement(document.getElementById("mymap"));

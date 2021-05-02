@@ -27,6 +27,10 @@ const booleanFeatures = ["red", "green", "blue", "gold", "white", "black", "oran
 const numericFeatures = [
   // "area", "population", 
   "bars", "stripes", "colours", "circles", "crosses", "saltires", "quarters", "sunstars"];
+const unusedDiscreteFeatures = [
+  "name", "landmass", "zone", "language", "religion"];
+const unusedNumericFeatures = [
+  "area", "population"];
 
 const DEFAULT_DATA = {
   get: () => 0,

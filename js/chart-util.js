@@ -64,8 +64,15 @@ function calculateSimilarity(a, b, featureWeights) {
 
 function getActiveCountry(flagData, searchTerm) {
   // projection.rotate([0, 0, 0]); // Bring active Country into view
-  // Add a check for common mappings Russia -> USSR, United ... -> ..., etc.
-  const searchResults = d3.group(flagData, d => d.name.includes(searchTerm)).get(true);
+  function positiveSearch(s, x) {
+    const aliases = new Map([
+      ["united states of america", "usa"],
+    ]); // let it support multiple aliases?
+    s = s.toLowerCase();
+    x = x.toLowerCase();
+    return s.includes(x) || (aliases.has(s) && aliases.get(s).includes(x));
+  }
+  const searchResults = d3.group(flagData, d => positiveSearch(d.name, searchTerm)).get(true);
   if (searchResults && searchResults.length > 0) {
     return searchResults[0]
   }
@@ -77,7 +84,15 @@ function getDetailQueryData(flagData, detailQuery) {
   let res = new Map()
   for (let i = 0; i < flagData.length; i++) {
     if (flagData[i][detailQuery]) {
-      res.set(flagData[i].name, flagData[i][detailQuery]);
+      let detailData;
+      if (booleanFeatures.includes(detailQuery)) {
+        detailData = Boolean(+flagData[i][detailQuery]);
+      } else if (numericFeatures.includes(detailQuery) || unusedNumericFeatures.includes(detailQuery)) {
+        detailData = +flagData[i][detailQuery];
+      } else {
+        detailData = flagData[i][detailQuery];
+      }
+      res.set(flagData[i].name, detailData);
     }
   }
   return res
@@ -138,31 +153,42 @@ class SearchInput {
     this.flagData = flagData;
     this.dataJoinCallback = dataJoinCallback;
   }
-  setElement(el) {
-    if (this.el) {
+  setElement(bar, input) {
+    if (this.bar && this.input) {
       return;
     }
-    const chart = this;
-    this.el = el;
-    this.el
+    const chart = this; // necessary for inside the below event callbacks
+    this.bar = bar;
+    this.input = input;
+    this.input
       .on('keyup', function onEvent(e) {
         if (e.keyCode === 13) {
-          const searchTerm = el.property('value');
+          const searchTerm = input.property('value');
+          if (searchTerm == "" || searchTerm == this.lastSearch) return; // abort search
+
           const searchedCountry = getActiveCountry(chart.flagData, searchTerm);
-          if (searchedCountry) chart.dataJoinCallback(searchedCountry); // Only if not undefined
+          if (searchedCountry && searchedCountry != this.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined and already active
+          this.lastSearch = searchedCountry;
         }
       })
+      .on('focus', function onEvent(e) {
+        bar.attr("class", "outline");
+      })
       .on('blur', function onEvent(e) {
-        const searchTerm = el.property('value');
+        bar.attr("class", "");
+        const searchTerm = input.property('value');
+        if (searchTerm == "" || searchTerm == this.lastSearch) return; // abort search
+
         const searchedCountry = getActiveCountry(chart.flagData, searchTerm);
-        if (searchedCountry) chart.dataJoinCallback(searchedCountry); // Only if not undefined
+        if (searchedCountry && searchedCountry != this.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined
+        this.lastSearch = searchedCountry;
       });
     // this.baseText = this.e.append('p');
     // this.baseImage = this.e.append('img');
   }
   dataJoin(activeCountry) {
-    if (this.el) {
-      this.el.property("value", activeCountry.name);
+    if (this.input) {
+      this.input.property("value", activeCountry.name);
     }
   }
   hide() {
