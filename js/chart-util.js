@@ -184,7 +184,7 @@ class TopCountries {
       return;
     }
     this.e = e;
-    this.baseText = this.e.append('p');
+    this.baseText = this.e.append('h2');
     this.baseImage = this.e.append('img');
   }
   dataJoin(activeCountry) {
@@ -193,10 +193,12 @@ class TopCountries {
       const chart = this;
 
       this.baseText
-        .text(`${activeCountry.name}`);
+        .text(`${activeCountry.name}`)
+        .attr("style", "margin:0px;");
       this.baseImage
         .attr("src", this.dataMap.has(activeCountry.name) ? this.dataMap.get(activeCountry.name).imageUrl : DEFAULT_IMAGE_URL)
-        .attr("height", "90px");
+        .attr("height", "90px")
+        .attr("style", "padding:2px 0px;");
 
       this.e.selectAll('li') // select all list elements (orange circle above)
         .data(
@@ -209,11 +211,13 @@ class TopCountries {
         .join('li')      // a selection that merges the "enter" and "update" states
           .text(d => "")
         .append('button')
-          .text(d => `${d.country}: ${f2p(d.similarity)} `)
+          .text((d, i) => `${i+1}. ${d.country}: ${f2p(d.similarity)} similar`)
           .on("click", clicked)
+          .attr("style", "width:100%;")
         .append('img')
           .attr("src", d => this.dataMap.has(d.country) ? this.dataMap.get(d.country).imageUrl : DEFAULT_IMAGE_URL)
-          .attr("height", "90px");
+          .attr("height", "90px")
+          .attr("style", "display:block;margin-left:auto;margin-right:auto;");
     
       function clicked(event, d) {
         const searchTerm = d.country;
@@ -315,16 +319,20 @@ class Tooltip {
         .attr("class", "tooltip")
         .style("opacity", 0);
   }
-  show(event, d, valid, dataValue, color) {
+  show(event, d, detailQuery, valid, dataValue, color) {
     function textColor(d) {
       return d3.hsl(color(d)).l > 0.5 ? "#000" : "#fff";
+    }
+
+    function formatDataValue(x) {
+      return detailQuery ? `${detailQuery}: ${x}` : `${f2p(x)} similar`;
     }
 
     this.node.transition()
       .duration(200)
       .style("opacity", .9);
     this.node.html(`${d.properties.name}<br/>
-${valid ? f4f(dataValue) : "N/A"}`)
+${valid ? formatDataValue(dataValue) : "N/A"}`)
       .style("left", (event.pageX) + "px")
       .style("background", color(dataValue))
       .style("color", textColor(dataValue))

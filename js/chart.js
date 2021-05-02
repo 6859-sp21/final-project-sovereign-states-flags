@@ -38,6 +38,7 @@ createWorld = async function() {
       .attr("id", "chart-legend");
 
   const svg = d3.create("svg")
+      .attr("id", "world")
       .attr("viewBox", [0, 0, width, height]);
   
   const defs = svg.append("defs");
@@ -106,7 +107,7 @@ createWorld = async function() {
         // .on("mouseover", mouseovered)
         .on("mouseover", (event, d) => {
           flagPreview.show(d.properties.name);
-          tooltip.show(event, d, data.has(d.properties.name), data.get(d.properties.name), color);
+          tooltip.show(event, d, detailQuery, data.has(d.properties.name), data.get(d.properties.name), color);
              
           return d3.select(event.currentTarget)
             .style("filter", "brightness(80%)");
@@ -206,9 +207,9 @@ createWorld().then(res => {
   searchInput.setElement(d3.select("#search"));
   topCountries.setElement(d3.select("#top-similar-countries"));
   detailTable.setElement(d3.select("#flag-details"), d3.select("#detail-top-cell"));
-  flagPreview.setElement(document.getElementById("viz"));
+  flagPreview.setElement(document.getElementById("mymap"));
   document.getElementById("mymap").appendChild(tooltip);
-  document.getElementById("mymap").appendChild(chartLegendSVG);
+  document.getElementById("map-legend").appendChild(chartLegendSVG);
   document.getElementById("mymap").appendChild(chartSVG);
 });
 // document.getElementById("mymap").appendChild(container.node());
