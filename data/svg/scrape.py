@@ -5,6 +5,7 @@ import json
 import re
 import os
 import urllib
+import unicodedata
 
 def open_file(path):
     with open(path) as f:
@@ -28,7 +29,7 @@ def get_country_sections():
             name = match.group(1) # country name
             if name != current_name:
                 assert current_name not in res
-                res[current_name] = section
+                res[current_name] = unicodedata.normalize('NFKD', section)
 
                 section = "" # reset section
                 current_name = name
@@ -43,21 +44,26 @@ def get_desired_years(sections):
     for name in sections:
         section = sections[name]
 
-        pattern = re.compile(r"\n(\d+)\n", re.UNICODE)
+        pattern = re.compile(r"\n([\d ]+)\n", re.UNICODE)
         match = re.findall(pattern, section)
 
         year = None
-        for s in match:
-            if year is None or year < int(s) < 1986:
-                year = int(s)
+        year_string = None
+        for s in match: # the matches are chronological
+            s_year = s.split()[-1]
+
+            if year is None or year < int(s_year) < 1986:
+                year = int(s_year)
+                year_string = s
 
         assert name not in res
-        res[name] = str(year)
+        res[name] = year_string
     return res
 
 def get_flags(sections, years):
     res = dict()
     for name in sections:
+        year = years[name]
         section = sections[name]
 
         pattern = re.compile(r"\n.+\n"+years[name], re.UNICODE)
@@ -65,8 +71,9 @@ def get_flags(sections, years):
         if match:
             s = match
 
-            pattern = re.compile(r"/thumb/(.*)", re.UNICODE)
-            match = re.findall(pattern, s)[0]
+            pattern = re.compile(r"/thumb/([^\s]*)\s", re.UNICODE)
+            matches = re.findall(pattern, s)
+            match = matches[0] if year.isdigit() else matches[-1] # year is not number, looks like 1900 1910. Then, should select last match.
 
             if match:
                 flag = "https://upload.wikimedia.org/wikipedia/commons/" + match[:match.find('svg')+3]
@@ -76,7 +83,7 @@ def get_flags(sections, years):
         assert False
     return res
 
-def generate_gallery(flags, path):
+def generate_gallery(flags, path, download=True):
     res = dict()
     for name in flags:
         url = flags[name]
@@ -86,7 +93,7 @@ def generate_gallery(flags, path):
         filename = urllib.unquote(filename)
         res[name] = filename
 
-        if not os.path.isfile(filename):
+        if download and not os.path.isfile(filename):
             print('do ' + filename)
             os.system('wget '+url)
     save_json(res, path)
@@ -96,3 +103,4 @@ sections = get_country_sections()
 years = get_desired_years(sections)
 flags = get_flags(sections, years)
 z = generate_gallery(flags, 'gallery.json')
+# z = generate_gallery(flags, 'gallery-to-compare.json', download=False)

@@ -33,33 +33,34 @@ function imageURLFromCountry(searchTerm, searchInto) {
 
 function calculateSimilarity(a, b, featureWeights) {
   let res = 0;
-  let normalizationFactorA = 0;
-  let normalizationFactorB = 0;
+  // let normalizationFactorA = 0;
+  // let normalizationFactorB = 0;
   for (const [feature, weight] of featureWeights) {
     if (feature in a && feature in b) {
       let calcSim = 0;
       if (discreteFeatures.includes(feature)) {
         calcSim = a[feature] === b[feature] ? 1 : 0;
       } else if (booleanFeatures.includes(feature)) {
-        calcSim = +a[feature] * +b[feature];
+        calcSim = +a[feature] * +b[feature] * 0.8 + (a[feature] === b[feature])*0.2;
 
-        // update normalization factors
-        if (+a[feature] > 0) normalizationFactorA++;
-        if (+b[feature] > 0) normalizationFactorB++;
+        // // update normalization factors
+        // if (+a[feature] > 0) normalizationFactorA++;
+        // if (+b[feature] > 0) normalizationFactorB++;
       } else if (numericFeatures.includes(feature)) {
         calcSim = +a[feature] * +b[feature];
         if (calcSim > 0) {
            calcSim = calcSim / Math.pow(Math.max(+a[feature], +b[feature]), 2);
         }
 
-        // update normalization factors
-        if (+a[feature] > 0) normalizationFactorA++;
-        if (+b[feature] > 0) normalizationFactorB++;
+        // // update normalization factors
+        // if (+a[feature] > 0) normalizationFactorA++;
+        // if (+b[feature] > 0) normalizationFactorB++;
       }
       res += (weight*calcSim);
     }
   }
-  return res/Math.sqrt(normalizationFactorA*normalizationFactorB);
+  return res;
+  // return res/Math.sqrt(normalizationFactorA*normalizationFactorB);
 }
 
 function getActiveCountry(flagData, searchTerm) {
