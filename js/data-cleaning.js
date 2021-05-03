@@ -37,7 +37,7 @@ const myrename = new Map([
   ["Vatican City", "Vatican"],
   // ["Yugoslavia", "?"],
   // ["Zaire", "?"],
-])
+]);
 
 // const rename = new Map([
 //   ["Antigua and Barbuda", "Antigua and Barb."],

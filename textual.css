@@ -1,0 +1,210 @@
+.overlayButton {
+  background-color: rgb(100, 100, 100);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  display: inline-block;
+  margin-top: 4%;
+  opacity: 0.6;
+  padding-left: 4%;
+  padding-right: 4%;
+  text-align: center;
+  /*transition: 0.3s;*/
+
+  /*font-size: 1.1vw;*/
+}
+.overlayButton:hover {
+  opacity: 1;
+}
+/*.overlayButton:focus {
+  outline: none;
+  box-shadow: 0 0 6px 6px rgba(96, 134, 138, 0.5);
+}*/
+
+#settings-panel {
+  border: 3px solid rgba(131, 149, 179, 0.3);
+  border-radius: 16px;
+  /*display: flex;*/
+  padding-left: 4px;
+  padding-right: 4px;
+  justify-content: start;
+  box-shadow: 0 12px 20px 0 rgb(131 149 179 / 0%);
+  transition: 0.2s ease box-shadow, 0.2s ease border;
+  align-items: center;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.closeButtonContainer {
+  width: 100%;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  /*transform: translate(-50%, -40%);*/
+  top: 0%;
+  right: -7%;
+  border-radius: 16px;
+
+  width: 30px;
+  height: 30px;
+  /*float: right;*/
+  /*font-size: 1.5vw;*/
+  /*color: rgb(45, 70, 70);*/
+  background: transparent;
+  vertical-align: text-top;
+  /*border: none;*/
+}
+
+#toggle-walkthrough-container {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3em;
+  height: 1.7em;
+  vertical-align: middle;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.3em;
+  width: 1.3em;
+  left: 0.2em;
+  bottom: 0.2em;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(0, 144, 158);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(0, 144, 158);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(1.3em);
+  -ms-transform: translateX(1.3em);
+  transform: translateX(1.3em);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*************** LIGHTBOX MARKUP ***************/
+
+.lightbox {
+  /* Default to hidden */
+  display: none;
+  /*visibility: hidden;*/
+
+  /* Overlay entire screen */
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* Horizontal and vertical centering of the image */
+  /*display: flex;*/
+  align-items: center;
+  text-align: center;
+
+  /* Translucent background */
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Unhide the lightbox when it's the target */
+.lightbox.target {
+  /*visibility: visible;*/
+  display: flex;
+  outline: none;
+  cursor: default;
+}
+
+.lightbox div {
+  /* Full width and height */
+  max-width: 90%;
+  max-height: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*************** Walkthrough ***************/
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 2px;
+  font: 12px;
+  /* background: lightsteelblue; */
+  border: 0px;
+  border-radius: 8px;
+
+  transform: translate(10px, -15px);
+  z-index:975;
+}
+
+#walkthrough-tooltip {
+  opacity: 50%;
+  background: #E7E0FF;
+}
+div.tooltip .closeButton {
+  right: 0%;
+  width: 20px;
+  height: 20px;
+}
+
+.walkthrough-question {
+  font-weight: bold;
+}
+.walkthrough-answer {
+  font-style: italic;
+  text-align: left;
+  padding-left: 30px;
+}
+
+#insight-tooltip {
+  width: 30%;
+  background: #E0EDFF;
+}

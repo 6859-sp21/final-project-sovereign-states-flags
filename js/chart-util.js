@@ -161,6 +161,7 @@ class SearchInput {
     const chart = this; // necessary for inside the below event callbacks
     this.bar = bar;
     this.input = input;
+    this.bar.node().classList.add('walkthroughReady');
     this.input
       .on('keyup', function onEvent(e) {
         if (e.keyCode === 13) {
@@ -201,10 +202,11 @@ class SearchInput {
 }
 
 class TopCountries {
-  constructor(dataMap, flagData, dataJoinCallback) {
+  constructor(dataMap, flagData, dataJoinCallback, topCountryCallback) {
     this.dataMap = dataMap;
     this.flagData = flagData;
     this.dataJoinCallback = dataJoinCallback;
+    this.topCountryCallback = topCountryCallback;
   }
   setElement(e) {
     if (this.e) {
@@ -238,7 +240,10 @@ class TopCountries {
         .join('li')      // a selection that merges the "enter" and "update" states
           .text(d => "")
         .append('button')
-          .text((d, i) => `${i+1}. ${d.country}: ${f2p(d.similarity)} similar`)
+          .text((d, i) => {
+            d['i'] = i;
+            return `${i+1}. ${d.country}: ${f2p(d.similarity)} similar`
+          })
           .on("click", clicked)
           .attr("style", "width:100%;")
         .append('img')
@@ -249,6 +254,7 @@ class TopCountries {
       function clicked(event, d) {
         const searchTerm = d.country;
         const clickedCountry = getActiveCountry(chart.flagData, searchTerm);
+        if (d.i == 0) chart.topCountryCallback(clickedCountry);
         chart.dataJoinCallback(clickedCountry);
         // (viewof searchTerm).value = d.country;
         // (viewof searchTerm).dispatchEvent(new Event("input"));
@@ -344,6 +350,7 @@ class Tooltip {
   constructor(parent) {
     this.node = parent.append("div")
         .attr("class", "tooltip")
+        .style("pointer-events", "none")
         .style("opacity", 0);
   }
   show(event, d, detailQuery, valid, dataValue, color) {

@@ -1,27 +1,6 @@
-var texts = ['foo', 'bar'];
-
-var container = d3.create('g');
-
-container
-  .selectAll('text')
-  .data(texts)
-  .enter()
-  .append('text')
-  .text(function(d) { return d; })
-  .attr('y', function(d,i) { return 50 * i })
-  .on('click', function(d,i) {
-    container
-      .append("foreignObject")
-      .attr("x", 0)
-      // .attr("y", function() { return 50 * d })
-      .attr("width", 140)
-      .attr("height", 20)
-      .html(function(d) {
-        return `<input type="text" value="d, i = ${d} ${i}" />`
-      })
-  })
-
 createWorld = async function() {
+  const {walkthroughManager} = await createTextual();
+
   const world = await _world();
   const countries = await _countries();
   const flagData = await _flagData();
@@ -35,7 +14,12 @@ createWorld = async function() {
       .scaleExtent([1, 64]);
   
   const chartLegendSVG = d3.create("svg")
-      .attr("id", "chart-legend");
+      .attr("id", "chart-legend")
+      .attr("width", 400)
+      .attr("height", 63)
+      .attr("viewBox", [0, 0, 400, 63])
+      .style("overflow", "visible")
+      .style("display", "block");
 
   const svg = d3.create("svg")
       .attr("id", "world")
@@ -75,7 +59,7 @@ createWorld = async function() {
   // Makes instances of visuals classes
 
   const searchInput = new SearchInput(flagData, dataJoin);
-  const topCountries = new TopCountries(flagMetadataMap, flagData, dataJoin);
+  const topCountries = new TopCountries(flagMetadataMap, flagData, dataJoin, d => walkthroughManager.topCountryCallback(d));
   const detailTable = new DetailTable(flagMetadataMap, dataJoin);
   const flagPreview = new FlagPreview(flagMetadataMap);
 
@@ -137,6 +121,11 @@ createWorld = async function() {
       searchInput.dataJoin(activeCountry);
       topCountries.dataJoin(activeCountry);
       detailTable.dataJoin(activeCountry);
+
+      walkthroughManager.dataJoin(activeCountry);
+    }
+    if (detailQuery) {
+      walkthroughManager.dataJoin(undefined, detailQuery);
     }
 
     // Helper functions
@@ -176,6 +165,8 @@ createWorld = async function() {
   dataJoin(flagData[164]);
   
   return {
+    walkthroughManager: walkthroughManager,
+
     searchInput: searchInput,
     topCountries: topCountries,
     detailTable: detailTable,
@@ -186,23 +177,14 @@ createWorld = async function() {
   };
 }
 
-d3.select("input#search").on('keydown', (event, d) => {
-  if(event.key === 'Enter') {
-    // data join
-    container
-      .append("foreignObject")
-      .attr("x", 0)
-      // .attr("y", function() { return 50 * i })
-      .attr("width", 140)
-      .attr("height", 20)
-      .html(function(d) {
-        return '<input type="text" value="Text goes here" />'
-      })
-  }
-});
-
 createWorld().then(res => {
-  const {searchInput, topCountries, detailTable, flagPreview, tooltip, chartLegendSVG, chartSVG} = res;
+  const {walkthroughManager,
+    searchInput, topCountries, detailTable, flagPreview, tooltip, chartLegendSVG, chartSVG} = res;
+
+  walkthroughManager.setElement(
+    d3.select("#settings-overlay-button"), d3.select("#settings-panel-container"), d3.select("#walkthrough-tooltip"), d3.select("#insight-tooltip"));
+  // walkthroughManager.checkWalkthrough(true);
+
   // chartSVG.append(flagPreview)
   searchInput.setElement(d3.select("#search-bar"), d3.select("#search"));
   topCountries.setElement(d3.select("#top-similar-countries"));
@@ -211,5 +193,7 @@ createWorld().then(res => {
   document.getElementById("mymap").appendChild(tooltip);
   document.getElementById("map-legend").appendChild(chartLegendSVG);
   document.getElementById("mymap").appendChild(chartSVG);
+
+  walkthroughManager.setWalkthrough(1);
 });
 // document.getElementById("mymap").appendChild(container.node());

@@ -1,5 +1,8 @@
 <html>
   <head>
+    <meta charset="utf-8">
+    <title>Sovereign State Flags</title>
+
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
     <!-- Load topojson -->
@@ -13,10 +16,15 @@
     <script src="js/data-cleaning.js"></script>
     <!-- Load chart utilities -->
     <script src="js/chart-util.js"></script>
+    <!-- Load textual utilities -->
+    <script src="js/textual-util.js"></script>
 
     <!-- Load font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" type="text/css" href="./textual.css" />
   </head>
   <body>
     <style>
@@ -29,22 +37,7 @@
     tr:nth-child(odd) {
       background-color: rgb(150, 150, 150, 0.5);
     }
-    div.tooltip {
-      position: absolute;
-      text-align: center;
-      width: auto;
-      height: auto;
-      padding: 2px;
-      font: 12px;
-      /* background: lightsteelblue; */
-      border: 0px;
-      border-radius: 8px;
-      pointer-events: none;
-
-      transform: translate(10px, -15px);
-      z-index:950;
-    }
-    #textual {
+    #left-panel {
       z-index:950;
       background-color: rgb(255, 255, 255, 0.5);
     }
@@ -133,8 +126,30 @@
     }
     </style>
 
+    <div class="lightbox" id="settings-panel-container">
+      <div id="settings-panel">
+        <div class="closeButtonContainer"><button id="settings-panel-close-button" class="closeButton"><span class="close-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" enable-background="new 0 0 40 40">
+            <line x1="0" y1="0" x2="40" y2="40" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10"></line>
+            <line x1="40" y1="0" x2="0" y2="40" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10"></line>    
+          </svg>
+        </span></button></div>
+        <h1>Settings</h1>
+        <div id="toggle-walkthrough-container">
+          <label id="toggle-walkthrough-window" class="switch">
+            <input id="toggle-walkthrough-window-checkbox" type="checkbox" checked="">
+            <span class="slider round"></span>
+          </label>
+          Visualization walkthrough
+        </div>
+      </div>
+    </div>
+
+    <div id="walkthrough-tooltip" class="tooltip"></div>
+    <div id="insight-tooltip" class="tooltip"></div>
+
     <div id="viz" style="display: grid; grid-gap: .875rem; grid-template-columns: 300px 1fr 300px;">
-      <div id="textual" style="display: inline-flex; flex-direction: column; align-items: start; font: 400 .75rem; color: #1b1e23; width: 100%;">
+      <div id="left-panel" style="display: inline-flex; flex-direction: column; align-items: start; font: 400 .75rem; color: #1b1e23; width: 100%;">
         <h1>6.859 Flag Similarity</h1>
         <div id="search-bar">
           <div id="search-icon"><svg viewBox="0 0 24 24">
@@ -151,6 +166,9 @@
         </div></div>
       </div>
       <div id="right-panel" style="display: inline-flex; flex-direction: column; align-items: start; font: 400 .75rem; color: #1b1e23; width: 100%;">
+        <button id="settings-overlay-button" class="overlayButton">
+          Settings
+        </button>
         <table id="flag-details">
           <tr>
             <th>Country</th>

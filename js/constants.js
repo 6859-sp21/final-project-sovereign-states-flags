@@ -37,3 +37,13 @@ const DEFAULT_DATA = {
   has: () => false,
   values: () => [0],
 }
+
+const insightsMap = new Map([
+  ["sunstars", `
+• The 50 stars on the <b>U.S. flag</b> represent the 50 states of the United States of America </br>
+• The <b>flag of Brazil</b> contains 27 stars, representing the Brazilian states and the Federal District. </br>
+• <b>Burma's (Myanmar's) flag</b> has 14 stars which represent each of the 14 member states of the Union of Burma. </br>
+• The seven stars on the <b>Venezuelan flag</b> represent the seven signatories to the Venezuelan declaration of independence. </br>
+• <b>China's flag</b> has 5 stars. The larger star symbolizes the Communist Party of China, and the four smaller stars that surround the big star symbolize the four social classes of China's New Democracy mentioned in Mao's "On the People's Democratic Dictatorship": the working class, the peasantry, the urban petite bourgeoisie, and the national bourgeoisie.
+  `],
+])
