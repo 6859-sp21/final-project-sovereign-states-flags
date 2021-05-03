@@ -182,7 +182,10 @@ createWorld().then(res => {
     searchInput, topCountries, detailTable, flagPreview, tooltip, chartLegendSVG, chartSVG} = res;
 
   walkthroughManager.setElement(
-    d3.select("#settings-overlay-button"), d3.select("#settings-panel-container"), d3.select("#walkthrough-tooltip"), d3.select("#insight-tooltip"));
+    d3.select("#settings-overlay-button"), d3.select("#settings-panel-container"),
+    d3.select("#about-overlay-button"), d3.select("#about-panel-container"),
+    d3.select("#walkthrough-tooltip"), d3.select("#insight-tooltip")
+  );
   // walkthroughManager.checkWalkthrough(true);
 
   // chartSVG.append(flagPreview)

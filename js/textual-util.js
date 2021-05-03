@@ -36,6 +36,13 @@ class WalkthroughTooltip {
         tooltip.closesCallback();
       });
   }
+  setWiggle(wiggle) {
+    if (wiggle) {
+      this.node.node().classList.add('walkthrough-prompting');
+    } else {
+      this.node.node().classList.remove('walkthrough-prompting');
+    }
+  }
   // move(event) {
   //   this.node.style("left", (event.pageX) + "px")
   //     .style("top", (event.pageY - 28) + "px");
@@ -63,11 +70,12 @@ class WalkthroughManager {
       this.walkthroughActive = false
     }
   }
-  setElement(settingsButton, settingsPanelContainer, walkthroughTooltipDiv, insightTooltipDiv) {
+  setElement(settingsButton, settingsPanelContainer, aboutButton, aboutPanelContainer, walkthroughTooltipDiv, insightTooltipDiv) {
     if (this.settingsButton && this.settingsPanelContainer && this.walkthroughTooltipDiv) {
       return;
     }
     const settingsPanelCloseButton = settingsPanelContainer.select("#settings-panel-close-button");
+    const aboutPanelCloseButton = aboutPanelContainer.select("#about-panel-close-button");
     const toggleWalkthroughCheckbox = settingsPanelContainer.select("#toggle-walkthrough-window-checkbox");
     const walkthroughTooltip = new WalkthroughTooltip(walkthroughTooltipDiv, () => this.stopWalkthrough());
     const insightTooltip = new WalkthroughTooltip(insightTooltipDiv, () => this.hideInsight());
@@ -75,11 +83,15 @@ class WalkthroughManager {
     const manager = this; // necessary for inside the below event callbacks
     this.settingsButton = settingsButton;
     this.settingsPanelContainer = settingsPanelContainer;
+    this.aboutButton = aboutButton;
+    this.aboutPanelContainer = aboutPanelContainer;
     this.walkthroughTooltipDiv = walkthroughTooltipDiv;
     this.insightTooltipDiv = insightTooltipDiv;
 // Settings Panel
     this.settingsPanelCloseButton = settingsPanelCloseButton;
     this.toggleWalkthroughCheckbox = toggleWalkthroughCheckbox;
+
+    this.aboutPanelCloseButton = aboutPanelCloseButton;
 // Tooltips
     this.walkthroughTooltip = walkthroughTooltip;
     this.insightTooltip = insightTooltip;
@@ -96,6 +108,14 @@ class WalkthroughManager {
     this.settingsPanelCloseButton
       .on('click', function onEvent(e) {
         settingsPanelContainer.node().classList.remove("target");
+      });
+    this.aboutButton
+      .on('focus', function onEvent(e) {
+        aboutPanelContainer.node().classList.add("target");
+      });
+    this.aboutPanelCloseButton
+      .on('click', function onEvent(e) {
+        aboutPanelContainer.node().classList.remove("target");
       });
     this.toggleWalkthroughCheckbox
       .on('input', function onEvent(e) {
@@ -139,6 +159,7 @@ class WalkthroughManager {
         document.getElementById("search-bar"),
         "<p class='walkthrough-question'>In what country where you born?</p>"
       );
+      this.walkthroughTooltip.setWiggle(true);
     } else if (step == 1.5) {
       this.birthCountry = data;
       this.walkthroughTooltip.show(
@@ -146,11 +167,13 @@ class WalkthroughManager {
         `<p class='walkthrough-question'>In what country where you born?</p>
         <p class='walkthrough-answer'>${this.birthCountry}</p>`
       );
+      this.walkthroughTooltip.setWiggle(false);
     } else if (step == 2) {
       this.walkthroughTooltip.show(
         document.querySelector("#top-similar-countries li"),
         `<p class='walkthrough-question'>What country's flag is most similar to ${this.birthCountry}'s?</p>`
       );
+      this.walkthroughTooltip.setWiggle(true);
     } else if (step == 2.5) {
       this.similarCountry = data;
       this.walkthroughTooltip.show(
@@ -158,6 +181,7 @@ class WalkthroughManager {
         `<p class='walkthrough-question'>What country's flag is most similar to ${this.birthCountry}'s?</p>
         <p class='walkthrough-answer'>${this.similarCountry}</p>`
       );
+      this.walkthroughTooltip.setWiggle(false);
     } else {
       return;
     }
@@ -168,11 +192,12 @@ class WalkthroughManager {
       window.setTimeout(() => this.setWalkthrough(2), 2000);
     }
 
-    if (detailQuery && insightsMap.has(detailQuery)) {
-      const insightHtml = insightsMap.get(detailQuery);
+    if (detailQuery && insightsTitleMap.has(detailQuery)) {
+      const insightTitle = insightsTitleMap.get(detailQuery);
+      const insightHtml = insightsContentMap.get(detailQuery);
       this.insightTooltip.show(
         document.getElementById("left-panel"),
-        `<p class='walkthrough-question'>${detailQuery}</p>
+        `<p class='walkthrough-question'>${insightTitle}</p>
         <p class='walkthrough-answer'>${insightHtml}</p>`,
         "SE"
       );

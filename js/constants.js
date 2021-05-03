@@ -38,7 +38,10 @@ const DEFAULT_DATA = {
   values: () => [0],
 }
 
-const insightsMap = new Map([
+const insightsTitleMap = new Map([
+  ["sunstars", "★ Seeing Stars ★"],
+])
+const insightsContentMap = new Map([
   ["sunstars", `
 • The 50 stars on the <b>U.S. flag</b> represent the 50 states of the United States of America </br>
 • The <b>flag of Brazil</b> contains 27 stars, representing the Brazilian states and the Federal District. </br>
