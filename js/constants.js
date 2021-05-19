@@ -41,6 +41,7 @@ const DEFAULT_DATA = {
 const insightsTitleMap = new Map([
   ["sunstars", "★ Seeing Stars ★"],
   ["stripes", "Earn Your Stripes ⛿"],
+  ["crosses", "A Cross to Bear ✞"],
 ])
 const insightsContentMap = new Map([
   ["sunstars", `
@@ -56,5 +57,9 @@ const insightsContentMap = new Map([
 • The <a href="https://en.wikipedia.org/wiki/Flag_of_Liberia" class="insight-hover" data-country="Liberia">Liberian flag</a> has 11 stripes which represent each of the 11 signatories of the Liberian Declaration of Independence. </br>
 • The nine stripes on the <a href="https://en.wikipedia.org/wiki/Flag_of_Greece" class="insight-hover" data-country="Greece">flag of Greece</a>, according to popular tradition, represent the nine syllables of its motto, Eleftheria i thanatos ("Freedom or Death"). </br>
 • <a href="https://en.wikipedia.org/wiki/Flag_of_Uruguay" class="insight-hover" data-country="Uruguay">Uruguay's flag</a> has nine stripes. They represent the nine original departments (administrative subdivisions) of Uruguay, and the design takes inspiration from the 13 stripes of the U.S. flag.
+  `],
+  ["crosses", `
+• The flags of <a href="https://en.wikipedia.org/wiki/Flag_of_Denmark" class="insight-hover" data-country="Denmark">Denmark</a>, <a href="https://en.wikipedia.org/wiki/Flag_of_Finland" class="insight-hover" data-country="Finland">Finland</a>, <a href="https://en.wikipedia.org/wiki/Flag_of_Sweden" class="insight-hover" data-country="Sweden">Sweden</a>, <a href="https://en.wikipedia.org/wiki/Flag_of_the_Faroe_Islands" class="insight-hover" data-country="Faeroe Is.">Faeroe Is.</a>, <a href="https://en.wikipedia.org/wiki/Flag_of_Iceland" class="insight-hover" data-country="Iceland">Iceland</a>, <a href="https://en.wikipedia.org/wiki/Flag_of_Norway" class="insight-hover" data-country="Norway">Norway</a>, all bear the design of the Nordic or Scandinavian cross. The cross design represents Christianity and today, the Nordic cross design is used in the national flags of all independent Nordic countries.</br>
+• The nine stripes on the <a href="https://en.wikipedia.org/wiki/Flag_of_Greece" class="insight-hover" data-country="Greece">flag of Greece</a>, according to popular tradition, represent the nine syllables of its motto, Eleftheria i thanatos ("Freedom or Death"). </br>
   `],
 ])
