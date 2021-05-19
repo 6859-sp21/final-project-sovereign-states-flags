@@ -313,8 +313,17 @@ class DetailTable {
       this.topCell
         .text(activeCountry.name);
       
+      // Should only include relevant details in the detail table
+      let detailAttributes = [];
+      for (const [key, value] of Object.entries(activeCountry)) {
+        if (discreteFeatures.includes(key) || booleanFeatures.includes(key) || numericFeatures.includes(key)) {
+          detailAttributes.push([key, value]);
+        }
+      }
+      console.log({detailAttributes});
+
       this.table.selectAll('tr.data-rows')
-        .data(Array.from(Object.entries(activeCountry).slice(1))) // Slice from 1 since first row (name) is redundant
+        .data(detailAttributes) // Slice from 1 since first row (name) is redundant
         .join('tr')
           .attr('class', 'data-rows')
           .html(d => `
