@@ -132,7 +132,7 @@ class WalkthroughManager {
 
 // Event Handlers
     this.settingsButton
-      .on('focus', function onEvent(e) {
+      .on('click', function onEvent(e) {
         settingsPanelContainer.node().classList.add("target");
       });
     this.settingsPanelCloseButton
@@ -140,7 +140,7 @@ class WalkthroughManager {
         settingsPanelContainer.node().classList.remove("target");
       });
     this.aboutButton
-      .on('focus', function onEvent(e) {
+      .on('click', function onEvent(e) {
         aboutPanelContainer.node().classList.add("target");
       });
     this.aboutPanelCloseButton

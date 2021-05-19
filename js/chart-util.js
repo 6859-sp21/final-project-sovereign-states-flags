@@ -226,19 +226,30 @@ class TopCountries {
     this.flagData = flagData;
     this.dataJoinCallback = dataJoinCallback;
     this.topCountryCallback = topCountryCallback;
+
+    this.reverseOrder = false;
   }
-  setElement(e) {
-    if (this.e) {
+  setElement(listContainer, reverseButton) {
+    if (this.listContainer && this.reverseButton) {
       return;
     }
-    this.e = e;
-    this.baseText = this.e.append('h2');
-    this.baseImage = this.e.append('img');
+    const manager = this; // necessary for inside the below event callbacks
+    this.listContainer = listContainer;
+    this.reverseButton = reverseButton;
+
+    this.baseText = this.listContainer.append('h2');
+    this.baseImage = this.listContainer.append('img');
+
+    this.reverseButton
+      .on('click', function onEvent(e) {
+        manager.toggleReverse();
+      });
   }
   dataJoin(activeCountry) {
-    if (this.e) {
+    if (this.listContainer) {
       const data = this.dataMap.get(activeCountry.name).similarities;
       const chart = this;
+      this.activeCountry = activeCountry;
 
       this.baseText
         .text(`${activeCountry.name}`)
@@ -248,21 +259,27 @@ class TopCountries {
         .attr("height", "90px")
         .attr("style", "padding:2px 0px;");
 
-      this.e.selectAll('li') // select all list elements (orange circle above)
+      let formattedData = 
+        Array.from(data)
+        .map(d => new Object({country: d[0], similarity: d[1]}))
+        .filter(d => d.country !== activeCountry.name)
+        .sort((a, b) => b.similarity - a.similarity)
+        .map((d, i) => {
+          d['i'] = i;
+          d['text'] = `${i+1}. ${d.country}: ${f2p(d.similarity)} similar`;
+          return d;
+        });
+
+      if (this.reverseOrder) formattedData = formattedData.reverse();
+      this.listContainer.selectAll('li')
         .data(
-          Array.from(data)
-          .map(d => new Object({country: d[0], similarity: d[1]}))
-          .filter(d => d.country !== activeCountry.name)
-          .sort((a, b) => b.similarity - a.similarity)
+          formattedData
           .slice(0,5)
-        )  // bind all our data values (blue circle above)
-        .join('li')      // a selection that merges the "enter" and "update" states
-          .text(d => "")
+        )
+        .join('li')
+          .text(() => "")
         .append('button')
-          .text((d, i) => {
-            d['i'] = i;
-            return `${i+1}. ${d.country}: ${f2p(d.similarity)} similar`
-          })
+          .text((d, i) => d['text'])
           .on("click", clicked)
           .attr("style", "width:100%;")
         .append('img')
@@ -283,7 +300,13 @@ class TopCountries {
         // (viewof detailQuery).dispatchEvent(new Event("input"));
         // dataJoin(activeData, d.country);
       }
+
+      this.reverseButton.style('display', 'inherit');
     }
+  }
+  toggleReverse() {
+    this.reverseOrder = !this.reverseOrder;
+    this.dataJoin(this.activeCountry);
   }
   hide() {
     // this.g.attr("display", "none");
@@ -315,12 +338,17 @@ class DetailTable {
       
       // Should only include relevant details in the detail table
       let detailAttributes = [];
-      for (const [key, value] of Object.entries(activeCountry)) {
-        if (discreteFeatures.includes(key) || booleanFeatures.includes(key) || numericFeatures.includes(key)) {
+      for (const key of detailTableFeatures) {
+        if (activeCountry.hasOwnProperty(key)) {
+          const value = activeCountry[key];
           detailAttributes.push([key, value]);
         }
       }
-      console.log({detailAttributes});
+      // for (const [key, value] of Object.entries(activeCountry)) {
+      //   if (discreteFeatures.includes(key) || booleanFeatures.includes(key) || numericFeatures.includes(key)) {
+      //     detailAttributes.push([key, value]);
+      //   }
+      // }
 
       this.table.selectAll('tr.data-rows')
         .data(detailAttributes) // Slice from 1 since first row (name) is redundant

@@ -32,6 +32,12 @@ const unusedDiscreteFeatures = [
 const unusedNumericFeatures = [
   "area", "population"];
 
+const detailTableFeatures = [
+  "bars", "stripes", "circles", "crosses", "saltires", "quarters", "sunstars", "crescent", "triangle", "icon", "animate", "text",
+  "mainhue", "topleft", "botright",
+  "colours", "red", "green", "blue", "gold", "white", "black", "orange",
+];
+
 const DEFAULT_DATA = {
   get: () => 0,
   has: () => false,
@@ -43,10 +49,17 @@ const insightsTitleMap = new Map([
   ["stripes", "Earn Your Stripes ⛿"],
   ["crosses", "✞ A Cross to Bear"],
   ["quarters", "▚ Close Quarters ▞"],
+  ["bars", "‖ Behind Bars ‖"],
 ])
 const insightsContentMap = new Map([
   ["bars", `
-  https://en.wikipedia.org/wiki/Tricolour_(flag)
+• The tricolour flag design, which features three parallel bands of different colours, originated in the 16th century as a symbol of republicanism, liberty or indeed revolution. The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_France" class="insight-hover" data-country="France">France</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Italy" class="insight-hover" data-country="Italy">Italy</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Romania" class="insight-hover" data-country="Romania">Romania</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Mexico" class="insight-hover" data-country="Mexico">Mexico</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Ireland" class="insight-hover" data-country="Ireland">Ireland</a>, 
+were all (except Ireland) first adopted with the formation of an independent republic in the period of the French Revolution to the Revolutions of 1848.
   `],
   ["quarters", `
 • The Union Flag appears in the canton (upper flagstaff-side quarter) of the flags of several nations and territories that are former British possessions or dominions. Four former British colonies in Oceania which are now independent countries incorporate the Union Jack as part of their national flags: <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Australia" class="insight-hover" data-country="Australia">Australia</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_New_Zealand" class="insight-hover" data-country="New Zealand">New Zealand</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Tuvalu" class="insight-hover" data-country="Tuvalu">Tuvalu</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Fiji" class="insight-hover" data-country="Fiji">Fiji</a>. <br>

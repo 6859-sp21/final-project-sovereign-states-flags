@@ -35,4 +35,7 @@ Regarding the development work done, I spent roughly 30-40 hours, with two aspec
 
 ## Changes Since Assignment 4
 
+Added walkthrough.
+Added insights.
+
 ...

@@ -197,7 +197,7 @@ createWorld().then(res => {
 
   // chartSVG.append(flagPreview)
   searchInput.setElement(d3.select("#search-bar"), d3.select("#search-fpssf"), document.getElementById("autocomplete-results"));
-  topCountries.setElement(d3.select("#top-similar-countries"));
+  topCountries.setElement(d3.select("#top-similar-countries"), d3.select("#reverse-top-countries-button"));
   detailTable.setElement(d3.select("#flag-details"), d3.select("#detail-top-cell"));
   flagPreview.setElement(document.getElementById("mymap"));
   document.getElementById("mymap").appendChild(tooltip);
