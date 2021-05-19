@@ -235,3 +235,6 @@ div.tooltip .closeButton {
   width: 30%;
   background: #E0EDFF;
 }
+.insight-hover {
+  font-weight: bold;
+}

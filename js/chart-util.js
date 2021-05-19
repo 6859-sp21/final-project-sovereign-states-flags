@@ -63,7 +63,7 @@ function calculateSimilarity(a, b, featureWeights) {
   // return res/Math.sqrt(normalizationFactorA*normalizationFactorB);
 }
 
-function getActiveCountry(flagData, searchTerm) {
+function getActiveCountry(flagData, searchTerm, allResults=false) {
   // projection.rotate([0, 0, 0]); // Bring active Country into view
   function positiveSearch(s, x) {
     const aliases = new Map([
@@ -75,7 +75,7 @@ function getActiveCountry(flagData, searchTerm) {
   }
   const searchResults = d3.group(flagData, d => positiveSearch(d.name, searchTerm)).get(true);
   if (searchResults && searchResults.length > 0) {
-    return searchResults[0]
+    return allResults ? searchResults : searchResults[0];
   }
   return undefined;
   // return flagData[164]; // Default switzerland :)
@@ -154,23 +154,42 @@ class SearchInput {
     this.flagData = flagData;
     this.dataJoinCallback = dataJoinCallback;
   }
-  setElement(bar, input) {
+  setElement(bar, input, datalist) {
     if (this.bar && this.input) {
       return;
     }
     const chart = this; // necessary for inside the below event callbacks
     this.bar = bar;
     this.input = input;
+    this.datalist = datalist;
     this.bar.node().classList.add('walkthroughReady');
     this.input
+      // .on('input', function onEvent(e) {
+      //   const searchTerm = input.property('value');
+      //   console.log({searchTerm});
+      //   // TODO: datajoin on satisfactory input (= unambiguously a particular country)
+      // })
       .on('keyup', function onEvent(e) {
+        const searchTerm = input.property('value');
         if (e.keyCode === 13) {
-          const searchTerm = input.property('value');
-          if (searchTerm == "" || searchTerm == this.lastSearch) return; // abort search
+          if (searchTerm == "" || searchTerm == chart.lastSearch) return; // abort search
 
           const searchedCountry = getActiveCountry(chart.flagData, searchTerm);
-          if (searchedCountry && searchedCountry != this.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined and already active
-          this.lastSearch = searchedCountry;
+          if (searchedCountry && searchedCountry != chart.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined and already active
+          chart.lastSearch = searchedCountry;
+        }
+
+        const autocompleteResults = getActiveCountry(chart.flagData, searchTerm, true);
+        if (autocompleteResults) {
+          // Sets up search input datalist options
+          let options = "";
+          let numOptions = 0, maxLength = 10;
+          for (const country of autocompleteResults) {
+            options += `<option value="${country["name"]}">`;
+            numOptions += 1;
+            if (numOptions >= maxLength) break;
+          }
+          chart.datalist.innerHTML = options;
         }
       })
       .on('focus', function onEvent(e) {
@@ -179,11 +198,11 @@ class SearchInput {
       .on('blur', function onEvent(e) {
         bar.attr("class", "");
         const searchTerm = input.property('value');
-        if (searchTerm == "" || searchTerm == this.lastSearch) return; // abort search
+        if (searchTerm == "" || searchTerm == chart.lastSearch) return; // abort search
 
         const searchedCountry = getActiveCountry(chart.flagData, searchTerm);
-        if (searchedCountry && searchedCountry != this.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined
-        this.lastSearch = searchedCountry;
+        if (searchedCountry && searchedCountry != chart.lastSearch) chart.dataJoinCallback(searchedCountry); // Only if not undefined
+        chart.lastSearch = searchedCountry;
       });
     // this.baseText = this.e.append('p');
     // this.baseImage = this.e.append('img');
@@ -303,7 +322,7 @@ class DetailTable {
   <td>${d[1]}</th>`)
           .on("click", clicked)
           .on("mouseover", (event, d) => d3.select(event.currentTarget)
-              .style("background-color", "#bbbbbb"))
+              .style("background-color", "#999999"))
           .on("mouseout", (event, d) => d3.select(event.currentTarget)
               .style("background-color", ""));
 

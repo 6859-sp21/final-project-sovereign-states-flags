@@ -184,12 +184,13 @@ createWorld().then(res => {
   walkthroughManager.setElement(
     d3.select("#settings-overlay-button"), d3.select("#settings-panel-container"),
     d3.select("#about-overlay-button"), d3.select("#about-panel-container"),
-    d3.select("#walkthrough-tooltip"), d3.select("#insight-tooltip")
+    d3.select("#walkthrough-tooltip"), d3.select("#insight-tooltip"),
+    flagPreview
   );
   // walkthroughManager.checkWalkthrough(true);
 
   // chartSVG.append(flagPreview)
-  searchInput.setElement(d3.select("#search-bar"), d3.select("#search"));
+  searchInput.setElement(d3.select("#search-bar"), d3.select("#search-fpssf"), document.getElementById("autocomplete-results"));
   topCountries.setElement(d3.select("#top-similar-countries"));
   detailTable.setElement(d3.select("#flag-details"), d3.select("#detail-top-cell"));
   flagPreview.setElement(document.getElementById("mymap"));

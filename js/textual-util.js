@@ -1,9 +1,11 @@
 class WalkthroughTooltip {
-  constructor(node, closesCallback) {
+  constructor(node, closesCallback, flagPreview) {
     this.node = node;
     this.closesCallback = closesCallback;
+    this.flagPreview = flagPreview;
   }
-  show(el, tooltipHtml, mode) {
+  show(el, tooltipHtml, mode="NE") {
+    // mode describes, cardinally, the relative positioning of this tooltip to el.
     tooltipHtml = `<div class="closeButtonContainer"><button id="tooltip-close-button" class="closeButton"><span class="close-icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" enable-background="new 0 0 40 40">
         <line x1="0" y1="0" x2="40" y2="40" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-miterlimit="10"></line>
@@ -15,11 +17,13 @@ class WalkthroughTooltip {
     let tx = elRect.right;
     let ty = elRect.top;
     let tdelta = "";
-    if (mode && mode == "SE") {
+    if (mode == "SE") {
       ty = elRect.bottom;
       tdelta = "translate(28px, -100%)"
     }
 
+    this.node
+      .style("display", "block");
     this.node.transition()
       .duration(200)
       .style("opacity", .9);
@@ -28,6 +32,13 @@ class WalkthroughTooltip {
       .style("color", "#000")
       .style("top", (ty - 28) + "px")
       .style("transform", tdelta);
+
+    // Special to insights
+    const flagPreview = this.flagPreview;
+    const insightHovers = this.node.selectAll(".insight-hover")
+      .each(function(d, i) {
+        this.addEventListener("mouseover", () => flagPreview.show(this.dataset.country));
+      });
 
     const closeButton = this.node.select("#tooltip-close-button");
     const tooltip = this;
@@ -48,6 +59,8 @@ class WalkthroughTooltip {
   //     .style("top", (event.pageY - 28) + "px");
   // }
   hide() {
+    this.node
+      .style("display", "none");
     this.node.transition()
       .duration(500)
       .style("opacity", 0);
@@ -70,15 +83,15 @@ class WalkthroughManager {
       this.walkthroughActive = false
     }
   }
-  setElement(settingsButton, settingsPanelContainer, aboutButton, aboutPanelContainer, walkthroughTooltipDiv, insightTooltipDiv) {
+  setElement(settingsButton, settingsPanelContainer, aboutButton, aboutPanelContainer, walkthroughTooltipDiv, insightTooltipDiv, flagPreview) {
     if (this.settingsButton && this.settingsPanelContainer && this.walkthroughTooltipDiv) {
       return;
     }
     const settingsPanelCloseButton = settingsPanelContainer.select("#settings-panel-close-button");
     const aboutPanelCloseButton = aboutPanelContainer.select("#about-panel-close-button");
     const toggleWalkthroughCheckbox = settingsPanelContainer.select("#toggle-walkthrough-window-checkbox");
-    const walkthroughTooltip = new WalkthroughTooltip(walkthroughTooltipDiv, () => this.stopWalkthrough());
-    const insightTooltip = new WalkthroughTooltip(insightTooltipDiv, () => this.hideInsight());
+    const walkthroughTooltip = new WalkthroughTooltip(walkthroughTooltipDiv, () => this.stopWalkthrough(), flagPreview);
+    const insightTooltip = new WalkthroughTooltip(insightTooltipDiv, () => this.hideInsight(), flagPreview);
 
     const manager = this; // necessary for inside the below event callbacks
     this.settingsButton = settingsButton;
@@ -95,6 +108,7 @@ class WalkthroughManager {
 // Tooltips
     this.walkthroughTooltip = walkthroughTooltip;
     this.insightTooltip = insightTooltip;
+    this.flagPreview = flagPreview
 
 // Persisted settings
     this.toggleWalkthroughCheckbox.node().checked = this.walkthroughActive;

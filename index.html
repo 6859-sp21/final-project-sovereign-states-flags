@@ -64,7 +64,7 @@
       display: flex;
       align-items: center;
     }
-    #search {
+    #search-fpssf {
       height: 42px;
       padding: 0;
       padding-left: 8px;
@@ -101,6 +101,9 @@
     }
     #flag-details {
       width: 100%;
+    }
+    .data-rows {
+      cursor: pointer;
     }
     #mymap {
       max-width:100%;
@@ -168,7 +171,7 @@
 
           Information on flag visuals and history/culture is taken from <a href="https://en.wikipedia.org/wiki/Timeline_of_national_flags">Wikipedia</a>. </br>
 
-          Website source code written with attributions to: <a href="https://github.com/bzh0/chinese-character-freq">Jenny Zhang</a>
+          Website source code written with attributions to: <a href="https://github.com/bzh0/chinese-character-freq">Jenny Zhang</a>, <a href="https://codepen.io/juliencoupey/pen/bGgowWQ">Julien Coupey</a>
         </p>
       </div>
     </div>
@@ -184,7 +187,8 @@
             <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
             <path d="M0 0h24v24H0z" fill="none"/>
           </svg></div>
-          <input id="search" type="text" placeholder="Enter country here..."></input>
+          <input id="search-fpssf" type="search" placeholder="Enter country here..." list="autocomplete-results"></input>
+          <datalist id="autocomplete-results"></datalist>
         </div>
         <ol id="top-similar-countries"></ol>
       </div>
