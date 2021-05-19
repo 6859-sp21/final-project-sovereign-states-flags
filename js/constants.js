@@ -41,9 +41,24 @@ const DEFAULT_DATA = {
 const insightsTitleMap = new Map([
   ["sunstars", "★ Seeing Stars ★"],
   ["stripes", "Earn Your Stripes ⛿"],
-  ["crosses", "A Cross to Bear ✞"],
+  ["crosses", "✞ A Cross to Bear"],
+  ["quarters", "▚ Close Quarters ▞"],
 ])
 const insightsContentMap = new Map([
+  ["bars", `
+  https://en.wikipedia.org/wiki/Tricolour_(flag)
+  `],
+  ["quarters", `
+• The Union Flag appears in the canton (upper flagstaff-side quarter) of the flags of several nations and territories that are former British possessions or dominions. Four former British colonies in Oceania which are now independent countries incorporate the Union Jack as part of their national flags: <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Australia" class="insight-hover" data-country="Australia">Australia</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_New_Zealand" class="insight-hover" data-country="New Zealand">New Zealand</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Tuvalu" class="insight-hover" data-country="Tuvalu">Tuvalu</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Fiji" class="insight-hover" data-country="Fiji">Fiji</a>. <br>
+• British Overseas Territories, whose flags incorporate the Union Jack: 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Bermuda" class="insight-hover" data-country="Bermuda">Bermuda</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_British_Virgin_Islands" class="insight-hover" data-country="British Virgin Is.">British Virgin Is.</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Cayman_Islands" class="insight-hover" data-country="Cayman Is.">Cayman Is.</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Falkland_Islands" class="insight-hover" data-country="Falkland Is.">Falkland Is.</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Montserrat" class="insight-hover" data-country="Montserrat">Montserrat</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Saint_Helena" class="insight-hover" data-country="Saint Helena">Saint Helena</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Turks_and_Caicos_Islands" class="insight-hover" data-country="Turks and Caicos Is.">Turks and Caicos Is.</a>
+  `],
   ["sunstars", `
 • The 50 stars on the <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_United_States" class="insight-hover" data-country="United States of America">U.S. flag</a> represent the 50 states of the United States of America. </br>
 • The <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Brazil" class="insight-hover" data-country="Brazil">flag of Brazil</a> contains 27 stars, representing the Brazilian states and the Federal District. </br>

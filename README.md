@@ -1,4 +1,14 @@
-# 6.859 Assignment 4: Interactive Visualization
+# World Flags Similarity
+
+Team Members: Richard Liu
+
+Paper: ...
+
+Video: ...
+
+Application: https://6859-sp21.github.io/final-project-sovereign-states-flags/
+
+<!-- summary image, abstract -->
 
 ## Flags Data Set
 
@@ -23,4 +33,6 @@ After looking through the dataset and deciding on a focus on flag similarity, I 
 
 Regarding the development work done, I spent roughly 30-40 hours, with two aspects taking the most time: data cleaning and porting out of ObservableHQ.
 
-<!-- https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Namibia.svg -->
+## Changes Since Assignment 4
+
+...

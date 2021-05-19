@@ -216,15 +216,29 @@ div.tooltip .closeButton {
   text-align: left;
   padding-left: 30px;
 }
-.walkthrough-prompting {
-  animation: wiggle 3s infinite;
+.walkthrough-prompting-left {
+  animation: wiggleLeft 3s infinite;
 }
-@keyframes wiggle {
+.walkthrough-prompting-right {
+  animation: wiggleRight 3s infinite;
+}
+@keyframes wiggleLeft {
   60% {
     transform: translate(10px, -15px) translateX(0px);
   }
   80% {
     transform: translate(10px, -15px) translateX(-10px);
+  }
+  100% {
+    transform: translate(10px, -15px) translateX(0px);
+  }
+}
+@keyframes wiggleRight {
+  60% {
+    transform: translate(10px, -15px) translateX(0px);
+  }
+  80% {
+    transform: translate(10px, -15px) translateX(10px);
   }
   100% {
     transform: translate(10px, -15px) translateX(0px);

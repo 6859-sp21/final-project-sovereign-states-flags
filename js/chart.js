@@ -78,10 +78,16 @@ createWorld = async function() {
     svg.on("click", reset);
 
     // Update self
-    const color = d3.scaleSequential()
+    let color = d3.scaleSequential()
       .domain(d3.extent(Array.from(data.values())))
       .interpolator(d3.interpolateYlGnBu)
       .unknown("#ccc");
+    if (detailQuery && discreteFeatures.includes(detailQuery)) {
+      color = d3.scaleOrdinal()
+        .domain(["red", "green", "blue", "gold", "white", "black", "orange"])
+        .range(["#d61535", "#34b522", "#227db5", "#b5a422", "#fff", "#242424", "#b55b22"])
+        .unknown("#ccc");
+    }
   
     const states = g.selectAll("path")
       .data(countries.features)

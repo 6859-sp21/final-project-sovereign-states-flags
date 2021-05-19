@@ -13,25 +13,33 @@ class WalkthroughTooltip {
       </svg>
     </span></button></div>
     <div style="padding:0px 15px;">${tooltipHtml}</div>`
-    const elRect = el.getBoundingClientRect()
+    this.node.html(tooltipHtml)
+      .style("display", "block");
+
+    const elRect = el.getBoundingClientRect();
+    const thisRect = this.node.node().getBoundingClientRect();
     let tx = elRect.right;
-    let ty = elRect.top;
-    let tdelta = "";
+    let ty = elRect.top - 28;
     if (mode == "SE") {
-      ty = elRect.bottom;
-      tdelta = "translate(28px, -100%)"
+      tx = elRect.right + 28;
+      ty = elRect.bottom - thisRect.height - 28;
+    }
+    if (mode == "SW") {
+      tx = elRect.left - thisRect.width - 28;
+      ty = elRect.bottom - thisRect.height - 28;
+    }
+    if (mode == "NW") {
+      tx = elRect.left - thisRect.width - 28;
+      ty = elRect.top + 28;
     }
 
-    this.node
-      .style("display", "block");
     this.node.transition()
       .duration(200)
       .style("opacity", .9);
-    this.node.html(tooltipHtml)
+    this.node
       .style("left", (tx) + "px")
       .style("color", "#000")
-      .style("top", (ty - 28) + "px")
-      .style("transform", tdelta);
+      .style("top", (ty) + "px");
 
     // Special to insights
     const flagPreview = this.flagPreview;
@@ -47,11 +55,19 @@ class WalkthroughTooltip {
         tooltip.closesCallback();
       });
   }
-  setWiggle(wiggle) {
+  setWiggle(wiggle, mode="left") {
     if (wiggle) {
-      this.node.node().classList.add('walkthrough-prompting');
+      if (mode === "left") {
+        this.node.node().classList.remove('walkthrough-prompting-right');
+        this.node.node().classList.add('walkthrough-prompting-left');
+      }
+      if (mode === "right") {
+        this.node.node().classList.remove('walkthrough-prompting-left');
+        this.node.node().classList.add('walkthrough-prompting-right');
+      }
     } else {
-      this.node.node().classList.remove('walkthrough-prompting');
+      this.node.node().classList.remove('walkthrough-prompting-left');
+      this.node.node().classList.remove('walkthrough-prompting-right');
     }
   }
   // move(event) {
@@ -196,7 +212,44 @@ class WalkthroughManager {
         <p class='walkthrough-answer'>${this.similarCountry}</p>`
       );
       this.walkthroughTooltip.setWiggle(false);
+    } else if (step == 3) {
+      this.walkthroughTooltip.show(
+        document.getElementById("right-panel"),
+        `<p class='walkthrough-question'>Now, navigate to Australia on the world map: <br>
+          drag the mouse to pan, scroll to zoom, <br>
+          and reset the map by clicking on an empty space. <br>
+          Then, try clicking on Australia!</p>`,
+        "SW"
+      );
+      this.walkthroughTooltip.setWiggle(false);
+    } else if (step == 3.5) {
+      this.walkthroughTooltip.show(
+        document.querySelector("#top-similar-countries li"),
+        `<p class='walkthrough-question'>Do you notice an interesting trend among these flags?</p>`
+      );
+      this.walkthroughTooltip.setWiggle(false);
+    } else if (step == 4) {
+      this.walkthroughTooltip.show(
+        document.querySelector("#flag-details"),
+        `<p class='walkthrough-question'>Why did those flags have a similar design in the top-left quarter? <br>
+          Explore this further by clicking on <u><i>quarters</i></u> in the details table.</p>`,
+        "SW"
+      );
+      this.walkthroughTooltip.setWiggle(true, "right");
+    } else if (step == 4.5) {
+      this.walkthroughTooltip.hide();
+      this.walkthroughTooltip.setWiggle(false);
+    } else if (step == 5) {
+      this.walkthroughTooltip.show(
+        document.querySelector("#right-panel-buttons-container"),
+        `<p class='walkthrough-question'>Now try exploring on your own - there are many <br>
+          more interesting trends to be found. Have fun! <br>
+          (Additional settings and info can be found here.)</p>`,
+        "NW"
+      );
+      this.walkthroughTooltip.setWiggle(true, "right");
     } else {
+      // There are many more interesting trends to be found. Have fun!
       return;
     }
   }
@@ -204,6 +257,16 @@ class WalkthroughManager {
     if (this.walkthroughStep == 1 && activeCountry) {
       this.setWalkthrough(1.5, activeCountry.name);
       window.setTimeout(() => this.setWalkthrough(2), 2000);
+    }
+
+    if (this.walkthroughStep == 3 && activeCountry && activeCountry.name === "Australia") {
+      this.setWalkthrough(3.5);
+      window.setTimeout(() => this.setWalkthrough(4), 5000);
+    }
+
+    if (this.walkthroughStep == 4 && detailQuery && detailQuery === "quarters") {
+      this.setWalkthrough(4.5);
+      window.setTimeout(() => this.setWalkthrough(5), 5000);
     }
 
     if (detailQuery && insightsTitleMap.has(detailQuery)) {
@@ -220,7 +283,7 @@ class WalkthroughManager {
   topCountryCallback(activeCountry) {
     if (this.walkthroughStep == 2) {
       this.setWalkthrough(2.5, activeCountry.name);
-      // window.setTimeout(() => this.setWalkthrough(3), 2000);
+      window.setTimeout(() => this.setWalkthrough(3), 2000);
     }
   }
   hide() {
