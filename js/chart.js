@@ -82,11 +82,38 @@ createWorld = async function() {
       .domain(d3.extent(Array.from(data.values())))
       .interpolator(d3.interpolateYlGnBu)
       .unknown("#ccc");
-    if (detailQuery && discreteFeatures.includes(detailQuery)) {
-      color = d3.scaleOrdinal()
-        .domain(["red", "green", "blue", "gold", "white", "black", "orange"])
-        .range(["#d61535", "#34b522", "#227db5", "#b5a422", "#fff", "#242424", "#b55b22"])
-        .unknown("#ccc");
+    if (detailQuery) { // Correct encodings
+      const flagColorsMap = new Map([
+        ["red", "#d61535"],
+        ["green", "#34b522"], 
+        ["blue", "#227db5"], 
+        ["gold", "#b5a422"], 
+        ["white", "#fff"], 
+        ["black", "#242424"], 
+        ["orange", "#b55b22"]
+      ]);
+      function falseColor(c) {
+        let falseCopy = d3.hsl(c);
+        falseCopy.h += 0.1;
+        falseCopy.l = 0.9;
+        return falseCopy;
+      }
+      if (discreteFeatures.includes(detailQuery)) {
+        color = d3.scaleOrdinal()
+          .domain(flagColorsMap.keys())
+          .range(flagColorsMap.values())
+          .unknown("#ccc");
+      } else if (flagColorsMap.has(detailQuery)) {
+        color = d3.scaleOrdinal()
+          .domain([true, false])
+          .range([flagColorsMap.get(detailQuery), falseColor(flagColorsMap.get(detailQuery))])
+          .unknown("#ccc");
+      } else if (booleanFeatures.includes(detailQuery)) {
+        color = d3.scaleOrdinal()
+          .domain([true, false])
+          .range([d3.interpolateYlGnBu(1), d3.interpolateYlGnBu(0)])
+          .unknown("#ccc");
+      }
     }
   
     const states = g.selectAll("path")

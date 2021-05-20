@@ -11,6 +11,7 @@ function imageURLFromCountry(searchTerm, searchInto) {
     ["Fr. Polynesia", "French Polynesia"],
     ["Guinea-Bissau", "Guinea"],
     ["N. Mariana Islands", "Northern Mariana Islands"],
+    ["North Yemen", "Yemen"], // temporary
     ["Saint Vin. and Gren.", "Saint Vincent and the Grenadines"],
     ["São Tomé and Principe", "São Tomé and Príncipe"],
     ["U.S. Virgin Islands", "Virgin Islands"],
@@ -23,6 +24,10 @@ function imageURLFromCountry(searchTerm, searchInto) {
   searchTerm = searchToWikiFormat.get(searchTerm) || searchTerm;
   
   let bestRes = DEFAULT_IMAGE_URL;
+  if (searchTerm === "Yemen") {
+    console.log(searchTerm);
+    console.log(searchInto.get(searchTerm));
+  }
   if (searchInto.has(searchTerm)) {
     const geoIx = searchInto.get(searchTerm);
     return `data/svg/${geoIx}`;

@@ -49,11 +49,66 @@ const insightsTitleMap = new Map([
   ["stripes", "Earn Your Stripes ⛿"],
   ["crosses", "✞ A Cross to Bear"],
   ["quarters", "▚ Close Quarters ▞"],
+
+// thing
+
   ["bars", "‖ Behind Bars ‖"],
+  ["circles", "Going in Circles ◯"],
+  ["saltires", "☓ Saltirewise ☓"],
+  ["crescent", "☾ To the Moon"],
+  ["triangle", "△ Triangles △"],
+  ["icon", "Cultural Icons 🏰"],
+  ["animate", "🍁 Look Alive! 🦅"],
 ])
 const insightsContentMap = new Map([
+  ["icon", `
+• The <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Soviet_Union" class="insight-hover" data-country="Russia">flag of the Soviet Union</a> features an iconic hammer and sickle design. The union of the hammer (workers) and the sickle (peasants) represents the victorious and enduring revolutionary alliance. The famous emblem is topped by a gold-bordered red star representing the Communist Party of the Soviet Union. </br>
+• <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_People%27s_Republic_of_Kampuchea" class="insight-hover" data-country="Cambodia">Cambodia's flag</a>, used from 1979 to 1993 during the Cambodian–Vietnamese War, features a five-towered Angkor Wat silhouette in the center. It symbolizes the country's religion, being one of the most important pilgrimage sites for Buddhists in Cambodia and around the world. </br>
+  `],
+  ["animate", `
+• The <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Canada" class="insight-hover" data-country="Canada">Canadian flag</a> features an animate red maple leaf. The maple leaf symbol traces its origins to the early 1700s, by when it had been adopted as an emblem by the French Canadians along the Saint Lawrence River. Jacques Viger, the first mayor of Montreal, described the maple as "the king of our forest; ... the symbol of the Canadian people." </br>
+• The <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Albania" class="insight-hover" data-country="Albania">flag of Albania</a> features a silhouetted double-headed eagle. The design was inspired by the Byzantine imperial flag, and represents the sovereign state of Albania, prominent against the red which stands for bravery, strength, valour and bloodshed. </br>
+  `],
+  ["triangle", `
+• The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Jordan" class="insight-hover" data-country="Jordan">Jordan</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Sudan" class="insight-hover" data-country="Sudan">Sudan</a>,
+share a similar triangle and tricolour design. <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Jordan" class="insight-hover" data-country="Jordan">Jordan's</a> design features a red triangle, representing the Hashemite dynasty, and the Arab Revolt. <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Sudan" class="insight-hover" data-country="Sudan">Sudan's</a> design uses a green triangle as a distinguishing feature to the designs of
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Syria" class="insight-hover" data-country="Syria">Syria</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Iraq" class="insight-hover" data-country="Iraq">Iraq</a>,
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Yemen" class="insight-hover" data-country="North Yemen">North Yemen</a>,
+    which instead use green stars.
+  `],
+  ["crescent", `
+• The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Pakistan" class="insight-hover" data-country="Pakistan">Pakistan</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Comoros" class="insight-hover" data-country="Comoros">Comoros</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Mauritania" class="insight-hover" data-country="Mauritania">Mauritania</a>, 
+share a similar star and crescent design. Each of these countries, each with strong ties to Islam, indeed feature these symbols to celebrate the Islamic star and crescent.
+• The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Turkey" class="insight-hover" data-country="Turkey">Turkey</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Tunisia" class="insight-hover" data-country="Tunisia">Tunisia</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Singapore" class="insight-hover" data-country="Singapore">Singapore</a>, 
+also share a similar star and crescent design, but attribute different meanings to the symbol. <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Tunisia" class="insight-hover" data-country="Tunisia">Tunisia's design</a> celebrates the Islamic star and crescent. <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Singapore" class="insight-hover" data-country="Singapore">Singapore's</a> star and crescent design represent their national ideals, and the idea of a young nation on the ascendant, respectively. <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Turkey" class="insight-hover" data-country="Turkey">Turkey's design</a> is based on an Ottoman legend about a dream of the founder of the Ottoman house, Osman I.
+  `],
+  ["saltires", `
+• A saltire, also called Saint Andrew's Cross or the crux decussata, is a heraldic symbol in the form of a diagonal cross, like the shape of the letter X in Roman type. In its early use was not intended as representing a Christian cross symbol. The association with Saint Andrew is a development of the 15th to 16th centuries. The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Burundi" class="insight-hover" data-country="Burundi">Burundi</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Jamaica" class="insight-hover" data-country="Jamaica">Jamaica</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_United_Kingdom" class="insight-hover" data-country="United Kingdom">United Kingdom</a>, 
+all use saltires.
+  `],
+  ["circles", `
+• The four circular jewels on the <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Bhutan" class="insight-hover" data-country="Bhutan">flag of Bhutan</a>, held in Druk's (the dragon's) claws, represent Bhutan's wealth and the security and protection of its people. </br>
+• <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Mongolia" class="insight-hover" data-country="Mongolia">Mongolia's flag</a> has two circles; the first of which represents the sun in the Soyombo symbol — a geometric abstraction that represents fire, sun, moon, earth, water — and the second representing the duality of yin and yang. </br>
+• The flags of 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Bangladesh" class="insight-hover" data-country="Bangladesh">Bangladesh</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Japan" class="insight-hover" data-country="Japan">Japan</a>, 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Greenland" class="insight-hover" data-country="Greenland">Greenland</a>, 
+which prominently feature a circle, each attribute different meanings to the symbol. To <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Bangladesh" class="insight-hover" data-country="Bangladesh">Bangladesh</a>, the red dot symbolizes the blood of the martyrs who gave away their life to bring about the nation's foundation. The red dot in <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Japan" class="insight-hover" data-country="Japan">Japan's flag</a> represents the sun, as does the red semicircle in <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Greenland" class="insight-hover" data-country="Greenland">Greenland's flag</a>, while its white semicircle represents the country's icebergs and pack ice.
+  `],
   ["bars", `
-• The tricolour flag design, which features three parallel bands of different colours, originated in the 16th century as a symbol of republicanism, liberty or indeed revolution. The flags of 
+• The tricolour flag design, which features three parallel bands of different colours, originated in the 16th century as a symbol of republicanism, liberty or indeed revolution. Using this design, the flags of 
     <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_France" class="insight-hover" data-country="France">France</a>, 
     <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Italy" class="insight-hover" data-country="Italy">Italy</a>, 
     <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Romania" class="insight-hover" data-country="Romania">Romania</a>, 
@@ -61,6 +116,10 @@ const insightsContentMap = new Map([
     <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Ireland" class="insight-hover" data-country="Ireland">Ireland</a>, 
 were all (except Ireland) first adopted with the formation of an independent republic in the period of the French Revolution to the Revolutions of 1848.
   `],
+
+
+// thing
+
   ["quarters", `
 • The Union Flag appears in the canton (upper flagstaff-side quarter) of the flags of several nations and territories that are former British possessions or dominions. Four former British colonies in Oceania which are now independent countries incorporate the Union Jack as part of their national flags: <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Australia" class="insight-hover" data-country="Australia">Australia</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_New_Zealand" class="insight-hover" data-country="New Zealand">New Zealand</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Tuvalu" class="insight-hover" data-country="Tuvalu">Tuvalu</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Fiji" class="insight-hover" data-country="Fiji">Fiji</a>. <br>
 • British Overseas Territories, whose flags incorporate the Union Jack: 
@@ -88,6 +147,6 @@ were all (except Ireland) first adopted with the formation of an independent rep
   `],
   ["crosses", `
 • The flags of <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Denmark" class="insight-hover" data-country="Denmark">Denmark</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Finland" class="insight-hover" data-country="Finland">Finland</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Sweden" class="insight-hover" data-country="Sweden">Sweden</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_the_Faroe_Islands" class="insight-hover" data-country="Faeroe Is.">Faeroe Is.</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Iceland" class="insight-hover" data-country="Iceland">Iceland</a>, <a target="_blank" href="https://en.wikipedia.org/wiki/Flag_of_Norway" class="insight-hover" data-country="Norway">Norway</a>, all bear the design of the Nordic or Scandinavian cross. The cross design represents Christianity and today, the Nordic cross design is used in the national flags of all independent Nordic countries.</br>
-• You may notice the Nordic cross and the characteristic shift of its center towards the hoist side. The origins of this property can be traced back to 11 June 1748, when regulations for the Danish civil ensign for merchant ships specified: "the two first fields must be square in form and the two outer fields must be 6⁄4 lengths of those". </br>
+• You may notice the Nordic cross and the characteristic shift of its center towards the hoist side. The origins of this tradition can be traced back to 11 June 1748, when regulations for the Danish civil ensign for merchant ships specified: "the two first fields must be square in form and the two outer fields must be 6⁄4 lengths of those". </br>
   `],
 ])
